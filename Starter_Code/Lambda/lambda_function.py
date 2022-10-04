@@ -81,6 +81,7 @@ def close(session_attributes, fulfillment_state, message):
 
 
 """
+TODO:
 Step 3: Enhance the Robo Advisor with an Amazon Lambda Function
 
 In this section, you will create an Amazon Lambda function that will validate the data provided by the user on the Robo Advisor.
@@ -125,6 +126,25 @@ def recommend_portfolio(intent_request):
     source = intent_request["invocationSource"]
 
     # YOUR CODE GOES HERE!
+    age = parse_int(age)
+    if not age > 0 and age < 65:
+        raise Exception("This is not a valid investment age")
+
+    investment_amount = parse_int(investment_amount)
+    if not investment_amount >= 5000:
+        raise Exception("Investment amount is too low")
+
+    confirmation = ""
+    if risk_level.lower() == "none":
+        confirmation = r"100% bonds (AGG), 0% equities (SPY)"
+    elif risk_level.lower() == "low":
+        confirmation = r"60% bonds (AGG), 40% equities (SPY)"
+    elif risk_level.lower() == "medium":
+        confirmation = r"40% bonds (AGG), 60% equities (SPY)"
+    else:
+        confirmation = r"20% bonds (AGG), 80% equities (SPY)"
+
+    return confirmation
 
 
 ### Intents Dispatcher ###
